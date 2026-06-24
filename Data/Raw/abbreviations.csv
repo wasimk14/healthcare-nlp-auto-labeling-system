@@ -1,0 +1,31 @@
+﻿abbreviation,meaning,entity_type
+DM,diabetes mellitus,DISEASE
+HTN,hypertension,DISEASE
+CAD,coronary artery disease,DISEASE
+COPD,chronic obstructive pulmonary disease,DISEASE
+CKD,chronic kidney disease,DISEASE
+RA,rheumatoid arthritis,DISEASE
+OA,osteoarthritis,DISEASE
+IBD,inflammatory bowel disease,DISEASE
+GERD,gastroesophageal reflux disease,DISEASE
+TB,tuberculosis,DISEASE
+HIV,human immunodeficiency virus infection,DISEASE
+CHF,congestive heart failure,DISEASE
+MI,myocardial infarction,DISEASE
+DVT,deep vein thrombosis,DISEASE
+PE,pulmonary embolism,DISEASE
+UTI,urinary tract infection,DISEASE
+PNA,pneumonia,DISEASE
+SLE,systemic lupus erythematosus,DISEASE
+BPH,benign prostatic hyperplasia,DISEASE
+PCOS,polycystic ovary syndrome,DISEASE
+ADHD,attention deficit hyperactivity disorder,DISEASE
+ECG,electrocardiogram,PROCEDURE
+EEG,electroencephalogram,PROCEDURE
+CXR,chest x‑ray,PROCEDURE
+MRI,magnetic resonance imaging,PROCEDURE
+CT,computed tomography scan,PROCEDURE
+LP,lumbar puncture,PROCEDURE
+USG,ultrasound imaging,PROCEDURE
+ABG,arterial blood gas,PROCEDURE
+PFT,pulmonary function test,PROCEDURE

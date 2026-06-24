@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare NLP Auto-Labeling System</title>
+
+
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 40px;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 300px;
+        padding: 15px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 12px 25px;
+        font-size: 16px;
+        background-color: #2e86de;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2165a8;
+    }
+
+    .results {
+        margin-top: 40px;
+    }
+
+    .stats-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        width: 160px;
+        background: #f8f9fa;
+        border-left: 5px solid #2e86de;
+        padding: 15px;
+        border-radius: 6px;
+    }
+
+    .stat-title {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .stat-value {
+        font-size: 26px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #2e86de;
+        color: white;
+    }
+
+    .placeholder {
+        color: #888;
+    }
+
+    .label {
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 20px;
+        color: white;
+        display: inline-block;
+        font-size: 13px;
+    }
+
+    .disease {
+        background-color: #e74c3c;
+    }
+
+    .medication {
+        background-color: #3498db;
+    }
+
+    .dosage {
+        background-color: #27ae60;
+    }
+
+    .symptom {
+        background-color: #8e44ad;
+    }
+
+    .procedure {
+        background-color: #f39c12;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+<h1>Healthcare NLP Auto-Labeling System</h1>
+
+<p class="subtitle">
+    Custom spaCy Named Entity Recognition (NER) Model
+</p>
+
+<h3>Clinical Note</h3>
+
+<form method="POST">
+
+    <textarea
+        name="clinical_note"
+        placeholder="Paste or type a clinical note here..."
+    >{{ clinical_note }}</textarea>
+
+    <br>
+
+    <button type="submit">
+        Extract Entities
+    </button>
+
+</form>
+
+<div class="results">
+
+    <h3>Entity Summary</h3>
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <div class="stat-title">Entities Found</div>
+            <div class="stat-value">{{ entities|length }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Diseases</div>
+            <div class="stat-value">
+                {{ entities | selectattr("label","equalto","DISEASE") | list | length }}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Medications</div>
+            <div class="stat-value">
+                {{ entities | selectattr("label","equalto","MEDICATION") | list | length }}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Dosages</div>
+            <div class="stat-value">
+                {{ entities | selectattr("label","equalto","DOSAGE") | list | length }}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Symptoms</div>
+            <div class="stat-value">
+                {{ entities | selectattr("label","equalto","SYMPTOM") | list | length }}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Procedures</div>
+            <div class="stat-value">
+                {{ entities | selectattr("label","equalto","PROCEDURE") | list | length }}
+            </div>
+        </div>
+
+    </div>
+
+    <h3>Detected Entities</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Entity</th>
+                <th>Label</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% if entities %}
+
+            {% for entity in entities %}
+
+            <tr>
+
+                <td>{{ entity.text }}</td>
+
+                <td>
+
+                    {% if entity.label == "DISEASE" %}
+                        <span class="label disease">DISEASE</span>
+
+                    {% elif entity.label == "MEDICATION" %}
+                        <span class="label medication">MEDICATION</span>
+
+                    {% elif entity.label == "DOSAGE" %}
+                        <span class="label dosage">DOSAGE</span>
+
+                    {% elif entity.label == "SYMPTOM" %}
+                        <span class="label symptom">SYMPTOM</span>
+
+                    {% elif entity.label == "PROCEDURE" %}
+                        <span class="label procedure">PROCEDURE</span>
+
+                    {% else %}
+                        {{ entity.label }}
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+                <td class="placeholder">Awaiting input...</td>
+                <td class="placeholder">-</td>
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
